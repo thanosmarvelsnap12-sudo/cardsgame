@@ -1,46 +1,421 @@
-<!-- In your index.html -->
-<div id="loading-screen">
-    <h1>INFINITY GAUNTLET</h1>
-    <p id="loading-text">Loading game assets...</p>
-    <div id="loading-progress"></div>
-    <button id="skip-loading" style="display:none;">SKIP IMAGE LOADING</button>
-    <button id="retry-loading" style="display:none;">RETRY LOADING</button>
-</div>
-
-<script type="module">
-    import { AssetLoader } from './js/image-loader.js';
-    
-    const loader = new AssetLoader();
-    const loadingText = document.getElementById('loading-text');
-    const skipBtn = document.getElementById('skip-loading');
-    const retryBtn = document.getElementById('retry-loading');
-    
-    async function loadAssets() {
-        loadingText.textContent = 'Loading Infinity Stones...';
-        const success = await loader.loadAll();
-        
-        if (success) {
-            // Hide loading screen, start game
-            document.getElementById('loading-screen').style.display = 'none';
-            startGame();
-        } else {
-            loadingText.textContent = 'Image loading failed. Using fallback graphics.';
-            skipBtn.style.display = 'block';
-            retryBtn.style.display = 'block';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INFINITY GAUNTLET - A Love Letter Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-    }
+        
+        body {
+            font-family: 'Cinzel', serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a0a2e 100%);
+            color: #ffd700;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, #1a0a2e 0%, #0a0a0a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s;
+        }
+        
+        .game-title {
+            font-size: 4em;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+            background: linear-gradient(90deg, #ffd700, #ff6b6b, #4ecdc4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .loading-text {
+            font-size: 1.5em;
+            margin: 20px 0;
+            color: #aaa;
+        }
+        
+        .loading-progress {
+            width: 300px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #45b7d1);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            font-size: 1.2em;
+            margin: 20px 0;
+            padding: 10px;
+            border: 1px solid #ff6b6b;
+            border-radius: 5px;
+            background: rgba(255, 107, 107, 0.1);
+        }
+        
+        .button-group {
+            margin: 30px 0;
+            display: flex;
+            gap: 20px;
+        }
+        
+        .game-button {
+            padding: 15px 30px;
+            font-size: 1.2em;
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cinzel', serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+        }
+        
+        .game-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 107, 107, 0.6);
+        }
+        
+        .game-button:active {
+            transform: translateY(-1px);
+        }
+        
+        .game-button.secondary {
+            background: linear-gradient(45deg, #45b7d1, #4ecdc4);
+            box-shadow: 0 5px 15px rgba(69, 183, 209, 0.4);
+        }
+        
+        .game-button.secondary:hover {
+            box-shadow: 0 8px 20px rgba(69, 183, 209, 0.6);
+        }
+        
+        .player-selection {
+            margin-top: 50px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s;
+        }
+        
+        .player-selection.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .selection-title {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+        
+        .player-options {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+        }
+        
+        .player-option {
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            min-width: 200px;
+        }
+        
+        .player-option:hover {
+            border-color: #ffd700;
+            background: rgba(255, 215, 0, 0.1);
+            transform: scale(1.05);
+        }
+        
+        .player-option.selected {
+            border-color: #ff6b6b;
+            background: rgba(255, 107, 107, 0.1);
+            box-shadow: 0 0 30px rgba(255, 107, 107, 0.3);
+        }
+        
+        .player-count {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+        
+        .player-label {
+            font-size: 1.5em;
+            color: #aaa;
+        }
+        
+        .stone-display {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .stone-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            color: #ffd700;
+        }
+        
+        .github-link {
+            position: absolute;
+            bottom: 20px;
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .github-link a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            .game-title {
+                font-size: 2.5em;
+                letter-spacing: 4px;
+            }
+            
+            .player-options {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .player-option {
+                min-width: 150px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+        <h1 class="game-title">INFINITY GAUNTLET</h1>
+        
+        <p id="loading-text" class="loading-text">Loading game assets...</p>
+        
+        <div class="loading-progress">
+            <div id="loading-bar" class="loading-bar"></div>
+        </div>
+        
+        <div id="error-message" class="error-message" style="display: none;">
+            Image loading failed. Using fallback graphics.
+        </div>
+        
+        <div class="button-group">
+            <button id="skip-loading" class="game-button" style="display: none;">
+                SKIP IMAGE LOADING
+            </button>
+            <button id="retry-loading" class="game-button secondary" style="display: none;">
+                RETRY LOADING
+            </button>
+        </div>
+    </div>
     
-    skipBtn.addEventListener('click', () => {
-        document.getElementById('loading-screen').style.display = 'none';
-        startGame();
-    });
-    
-    retryBtn.addEventListener('click', () => {
-        skipBtn.style.display = 'none';
-        retryBtn.style.display = 'none';
-        loadAssets();
-    });
-    
-    // Start loading
-    loadAssets();
-</script>
+    <!-- Main Game Screen (Hidden Initially) -->
+    <div id="game-screen" style="display: none;">
+        <h1 class="game-title">INFINITY GAUNTLET</h1>
+        <p class="loading-text">A Love Letter Game</p>
+        
+        <div id="player-selection" class="player-selection">
+            <h2 class="selection-title">Number of Players</h2>
+            
+            <div class="player-options">
+                <div class="player-option" data-players="2">
+                    <div class="player-count">2</div>
+                    <div class="player-label">PLAYERS</div>
+                </div>
+                
+                <div class="player-option" data-players="3">
+                    <div class="player-count">3</div>
+                    <div class="player-label">PLAYERS</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Infinity Stones Display -->
+        <div class="stone-display">
+            <div class="stone-icon" style="background: #ff4757;">P</div>
+            <div class="stone-icon" style="background: #3742fa;">S</div>
+            <div class="stone-icon" style="background: #ffa502;">R</div>
+            <div class="stone-icon" style="background: #2ed573;">T</div>
+            <div class="stone-icon" style="background: #5352ed;">M</div>
+            <div class="stone-icon" style="background: #ff7f50;">S</div>
+        </div>
+        
+        <div class="github-link">
+            Game hosted at: <a href="https://p12-sudo.github.io/cardsgame" target="_blank">p12-sudo.github.io/cardsgame</a>
+        </div>
+    </div>
+
+    <script type="module">
+        // Import the asset loader
+        import { AssetLoader } from './js/image-loader.js';
+        
+        // DOM Elements
+        const loadingScreen = document.getElementById('loading-screen');
+        const gameScreen = document.getElementById('game-screen');
+        const loadingText = document.getElementById('loading-text');
+        const loadingBar = document.getElementById('loading-bar');
+        const errorMessage = document.getElementById('error-message');
+        const skipButton = document.getElementById('skip-loading');
+        const retryButton = document.getElementById('retry-loading');
+        const playerSelection = document.getElementById('player-selection');
+        const playerOptions = document.querySelectorAll('.player-option');
+        
+        // Asset Loader Instance
+        const assetLoader = new AssetLoader();
+        
+        // Loading Progress Tracking
+        let totalAssets = 0;
+        let loadedAssets = 0;
+        
+        // Update loading progress
+        function updateProgress(loaded, total) {
+            loadedAssets = loaded;
+            totalAssets = total;
+            const percent = total > 0 ? Math.round((loaded / total) * 100) : 0;
+            loadingBar.style.width = `${percent}%`;
+            loadingText.textContent = `Loading game assets... ${percent}%`;
+        }
+        
+        // Monitor loading progress
+        assetLoader.onProgress = updateProgress;
+        
+        // Start the game
+        function startGame() {
+            // Hide loading screen
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+                loadingScreen.style.display = 'none';
+                
+                // Show game screen
+                gameScreen.style.display = 'block';
+                
+                // Show player selection with animation
+                setTimeout(() => {
+                    playerSelection.classList.add('show');
+                }, 300);
+            }, 500);
+        }
+        
+        // Handle player selection
+        playerOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove previous selection
+                playerOptions.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add selection to clicked option
+                option.classList.add('selected');
+                
+                const playerCount = option.getAttribute('data-players');
+                console.log(`Starting game with ${playerCount} players`);
+                
+                // Here you would start the actual game
+                setTimeout(() => {
+                    alert(`Game starting with ${playerCount} players!\n\nThis is where your Love Letter game logic would begin.`);
+                }, 500);
+            });
+        });
+        
+        // Skip image loading
+        skipButton.addEventListener('click', () => {
+            console.log('Skipping image loading, using fallback graphics');
+            startGame();
+        });
+        
+        // Retry loading
+        retryButton.addEventListener('click', async () => {
+            console.log('Retrying image loading...');
+            errorMessage.style.display = 'none';
+            skipButton.style.display = 'none';
+            retryButton.style.display = 'none';
+            loadingText.textContent = 'Retrying...';
+            await loadAssets();
+        });
+        
+        // Main loading function
+        async function loadAssets() {
+            try {
+                console.log('🔄 Starting asset loading...');
+                
+                // Count total assets
+                totalAssets = Object.keys(assetLoader.assets.characters).length +
+                             Object.keys(assetLoader.assets.stones).length +
+                             Object.keys(assetLoader.assets.enemies).length;
+                
+                // Start loading
+                const success = await assetLoader.loadAll();
+                
+                if (success) {
+                    console.log('✅ All assets loaded successfully!');
+                    startGame();
+                } else {
+                    console.warn('⚠️ Some assets failed to load, using fallbacks');
+                    errorMessage.style.display = 'block';
+                    skipButton.style.display = 'inline-block';
+                    retryButton.style.display = 'inline-block';
+                }
+                
+            } catch (error) {
+                console.error('❌ Error loading assets:', error);
+                loadingText.textContent = 'Error loading assets';
+                errorMessage.style.display = 'block';
+                skipButton.style.display = 'inline-block';
+                retryButton.style.display = 'inline-block';
+            }
+        }
+        
+        // Start loading when page loads
+        document.addEventListener('DOMContentLoaded', loadAssets);
+    </script>
+</body>
+</html>
