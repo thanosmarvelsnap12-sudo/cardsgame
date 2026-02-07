@@ -1,871 +1,220 @@
-/* Reset and Base Styles */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
+/* ===== IMAGE SUPPORT STYLES ===== */
 
-body {
-    font-family: 'Marvel', sans-serif;
+/* Loading Screen */
+#loading-screen {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: linear-gradient(135deg, #0c0c1d 0%, #1a1a2e 100%);
-    color: #fff;
-    min-height: 100vh;
-    padding: 20px;
-    overflow-x: hidden;
 }
 
-.container {
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-/* Screen Management */
-.screen {
-    display: none;
-}
-
-.screen.active {
-    display: block;
-}
-
-/* Setup Screen */
-.setup-screen {
+.loading-content {
     text-align: center;
-    padding: 40px 20px;
-}
-
-.logo {
-    margin-bottom: 40px;
-    animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-}
-
-.logo h1 {
-    font-family: 'Bangers', cursive;
-    font-size: 4rem;
-    color: #ffd700;
-    text-shadow: 0 0 10px #ff6b6b, 0 0 20px #ff6b6b;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-}
-
-.logo h2 {
-    font-size: 1.8rem;
-    color: #4ecdc4;
-    font-style: italic;
-}
-
-.setup-options {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
+    max-width: 600px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.05);
     border-radius: 20px;
-    padding: 30px;
-    margin: 40px auto;
-    max-width: 800px;
     border: 2px solid #4ecdc4;
 }
 
-.player-count h3, .who-is-thanos h3 {
-    color: #ffd700;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.count-selector {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    flex-wrap: wrap;
-    margin-bottom: 30px;
-}
-
-.count-btn {
-    padding: 15px 30px;
-    font-size: 1.2rem;
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    color: white;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+.loading-logo h1 {
     font-family: 'Bangers', cursive;
-    letter-spacing: 1px;
-}
-
-.count-btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
-}
-
-.count-btn.active {
-    background: linear-gradient(135deg, #4ecdc4, #44a08d);
-    box-shadow: 0 0 20px #4ecdc4;
-}
-
-#player-names {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 30px;
-}
-
-.player-input {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-}
-
-.player-input label {
+    font-size: 3rem;
     color: #ffd700;
-    font-size: 1.2rem;
-    min-width: 150px;
-    text-align: left;
-}
-
-.player-input input {
-    flex: 1;
-    padding: 10px 15px;
-    border: 2px solid #4ecdc4;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.9);
-    font-size: 1.1rem;
-    color: #333;
-}
-
-.btn-primary, .btn-secondary, .btn-action {
-    padding: 15px 40px;
-    font-size: 1.3rem;
-    border: none;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-family: 'Bangers', cursive;
-    letter-spacing: 1px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 10px;
-}
-
-.btn-primary {
-    background: linear-gradient(135deg, #ffd700, #ff6b6b);
-    color: #000;
-}
-
-.btn-primary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.4);
-}
-
-.btn-secondary {
-    background: linear-gradient(135deg, #4ecdc4, #44a08d);
-    color: white;
-}
-
-.btn-secondary:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 20px rgba(78, 205, 196, 0.4);
-}
-
-.btn-action {
-    background: linear-gradient(135deg, #ff6b6b, #ee5a24);
-    color: white;
-    min-width: 180px;
-}
-
-.btn-action:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none !important;
-    box-shadow: none !important;
-}
-
-.rules-preview {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    padding: 25px;
-    margin-top: 40px;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.rules-preview h3 {
-    color: #4ecdc4;
-    margin-bottom: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.rules-preview ul {
-    list-style: none;
-    text-align: left;
-    margin-left: 20px;
-}
-
-.rules-preview li {
-    margin: 10px 0;
-    padding-left: 30px;
-    position: relative;
-    font-size: 1.1rem;
-}
-
-.rules-preview li:before {
-    content: '•';
-    color: #ffd700;
-    font-size: 1.5rem;
-    position: absolute;
-    left: 0;
-}
-
-/* Game Screen */
-.game-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    padding: 20px;
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    border: 2px solid #ffd700;
-}
-
-.game-title h1 {
-    font-family: 'Bangers', cursive;
-    font-size: 2.5rem;
-    color: #ffd700;
+    margin-bottom: 10px;
     text-shadow: 0 0 10px #ff6b6b;
 }
 
-.game-info {
-    display: flex;
-    gap: 20px;
-    margin-top: 10px;
+.loading-logo p {
     color: #4ecdc4;
-    font-size: 1.1rem;
-}
-
-.life-trackers {
-    display: flex;
-    gap: 40px;
-}
-
-.life-tracker {
-    text-align: center;
-    min-width: 200px;
-}
-
-.life-tracker h3 {
-    color: #ffd700;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.life-bar {
-    width: 100%;
-    height: 30px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 15px;
-    overflow: hidden;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    margin-bottom: 10px;
-}
-
-.life-fill {
-    height: 100%;
-    transition: width 0.5s ease;
-}
-
-.hero-life .life-fill {
-    background: linear-gradient(90deg, #4ecdc4, #44a08d);
-}
-
-.thanos-life .life-fill {
-    background: linear-gradient(90deg, #ff6b6b, #ee5a24);
-}
-
-.life-text {
     font-size: 1.2rem;
-    font-weight: bold;
-    color: #fff;
-}
-
-/* Game Board */
-.game-board {
-    display: grid;
-    grid-template-columns: 300px 1fr 150px;
-    gap: 20px;
     margin-bottom: 30px;
-    min-height: 500px;
 }
 
-.stones-display {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    padding: 20px;
-    border: 2px solid #4ecdc4;
-}
-
-.stones-display h3 {
-    color: #ffd700;
-    text-align: center;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.stones-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 10px;
-}
-
-.stone-slot {
-    aspect-ratio: 1;
+.progress-bar {
+    width: 100%;
+    height: 20px;
     background: rgba(255, 255, 255, 0.1);
     border-radius: 10px;
-    border: 2px dashed rgba(255, 255, 255, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    transition: all 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 15px;
 }
 
-.stone-slot.collected {
-    border: 2px solid #ffd700;
-    background: rgba(255, 215, 0, 0.1);
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4ecdc4, #44a08d);
+    width: 0%;
+    transition: width 0.3s ease;
 }
 
-.players-container {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-}
-
-.player-area {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    padding: 20px;
-    min-height: 200px;
-}
-
-.thanos-area {
-    border: 2px solid #ff6b6b;
-}
-
-.heroes-area {
-    border: 2px solid #4ecdc4;
-}
-
-.player-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.loading-text {
+    color: #ffd700;
+    font-size: 1.1rem;
     margin-bottom: 20px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    min-height: 24px;
 }
 
-.player-header h3 {
-    color: #ffd700;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.player-tokens {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: rgba(255, 215, 0, 0.1);
-    padding: 5px 15px;
-    border-radius: 20px;
-    border: 1px solid #ffd700;
-}
-
-.token-count {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: #ffd700;
-}
-
-.token-icon {
-    color: #ffd700;
-}
-
-.heroes-list {
+.loading-options {
     display: flex;
     gap: 15px;
-    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
 }
 
-.hero-tag {
-    background: rgba(78, 205, 196, 0.2);
-    padding: 5px 15px;
-    border-radius: 20px;
-    border: 1px solid #4ecdc4;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.hero-tag.current {
-    background: rgba(255, 215, 0, 0.2);
-    border-color: #ffd700;
-    transform: scale(1.05);
-}
-
-.hero-tag .token-count {
+.loading-options button {
+    padding: 10px 20px;
     font-size: 1rem;
 }
 
-.player-hand, .heroes-hands {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    align-items: center;
-    min-height: 180px;
-}
-
-.card {
-    width: 120px;
-    height: 180px;
-    background: linear-gradient(135deg, #1a1a2e, #16213e);
-    border-radius: 10px;
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
+/* Cards with Images */
+.card.has-image {
     position: relative;
     overflow: hidden;
+    padding: 0;
+    background-size: cover !important;
+    background-position: center !important;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 5px 20px rgba(255, 215, 0, 0.3);
-    border-color: #ffd700;
-}
-
-.card.selected {
-    border-color: #4ecdc4;
-    box-shadow: 0 0 20px #4ecdc4;
-    transform: translateY(-5px);
-}
-
-.card.hero-card {
-    border-color: #4ecdc4;
-}
-
-.card.thanos-card {
-    border-color: #ff6b6b;
-}
-
-.card.infinity-stone {
-    border-color: #ffd700;
-    background: linear-gradient(135deg, #0c0c1d, #1a1a2e);
-}
-
-.card-number {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #ffd700;
-    text-shadow: 2px 2px 0 #000;
-}
-
-.card-name {
-    font-size: 0.9rem;
-    text-align: center;
-    color: #fff;
-    margin: 10px 0;
-    line-height: 1.2;
-}
-
-.card-effect {
-    font-size: 0.7rem;
-    color: #aaa;
-    text-align: center;
-    margin-top: auto;
-}
-
-.card-back {
-    background: linear-gradient(135deg, #333, #555);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-    color: rgba(255, 255, 255, 0.3);
-}
-
-.card-back.infinity-back {
-    background: linear-gradient(135deg, #ffd700, #ff6b6b);
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.tokens-pile {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    padding: 20px;
-    border: 2px solid #ffd700;
-    text-align: center;
-}
-
-.tokens-pile h3 {
-    color: #ffd700;
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-}
-
-.pile-count {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #ffd700;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-}
-
-/* Game Controls */
-.game-controls {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    padding: 20px;
-    border: 2px solid #4ecdc4;
-}
-
-.deck-info {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-}
-
-.deck {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 20px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    min-width: 120px;
-}
-
-.deck i {
-    font-size: 1.5rem;
-    color: #ffd700;
-}
-
-.deck span {
-    font-size: 1.3rem;
-    font-weight: bold;
-    color: #fff;
-}
-
-.hero-deck {
-    border: 2px solid #4ecdc4;
-}
-
-.thanos-deck {
-    border: 2px solid #ff6b6b;
-}
-
-.action-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin: 20px 0;
-    flex-wrap: wrap;
-}
-
-.game-log {
-    margin-top: 20px;
-    padding: 15px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    max-height: 200px;
-    overflow-y: auto;
-}
-
-.game-log h3 {
-    color: #ffd700;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.log-messages {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.log-entry {
-    padding: 8px 12px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-    border-left: 3px solid #4ecdc4;
-    font-size: 0.9rem;
-    animation: fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateX(-10px); }
-    to { opacity: 1; transform: translateX(0); }
-}
-
-.log-entry.important {
-    border-left-color: #ffd700;
-    background: rgba(255, 215, 0, 0.1);
-}
-
-.log-entry.thanos {
-    border-left-color: #ff6b6b;
-    background: rgba(255, 107, 107, 0.1);
-}
-
-/* Modals */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    z-index: 1000;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal.active {
-    display: flex;
-}
-
-.modal-content {
-    background: linear-gradient(135deg, #1a1a2e, #0c0c1d);
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 600px;
-    width: 90%;
-    border: 3px solid #ffd700;
+.card.has-image .card-content {
     position: relative;
-    max-height: 90vh;
-    overflow-y: auto;
-}
-
-.modal-content h2, .modal-content h3 {
-    color: #ffd700;
-    text-align: center;
-    margin-bottom: 20px;
-    font-family: 'Bangers', cursive;
-}
-
-.modal-cards {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: center;
-    margin: 20px 0;
-}
-
-.modal-cards .card {
-    width: 100px;
-    height: 150px;
-}
-
-.target-options {
+    z-index: 2;
+    background: rgba(0, 0, 0, 0.7);
+    height: 100%;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    margin: 20px 0;
+    justify-content: space-between;
+    padding: 10px;
+    border-radius: 8px;
 }
 
-.target-option {
-    padding: 15px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid #4ecdc4;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    text-align: center;
-    font-size: 1.1rem;
-}
-
-.target-option:hover {
-    background: rgba(78, 205, 196, 0.2);
-    transform: translateY(-3px);
-}
-
-.target-option.selected {
-    background: rgba(255, 215, 0, 0.2);
-    border-color: #ffd700;
-}
-
-.game-over-content {
-    text-align: center;
-    animation: victoryPulse 1s infinite;
-}
-
-@keyframes victoryPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.02); }
-}
-
-#game-over-title {
-    font-size: 4rem;
-    color: #ffd700;
-    text-shadow: 0 0 20px #ff6b6b;
-    margin-bottom: 20px;
-}
-
-#game-over-message {
-    font-size: 1.5rem;
-    margin: 20px 0;
-    color: #4ecdc4;
-}
-
-.game-over-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-top: 30px;
-}
-
-.rules-content {
-    max-width: 800px;
-}
-
-.rules-scroll {
-    max-height: 60vh;
-    overflow-y: auto;
-    padding-right: 10px;
-    margin: 20px 0;
-}
-
-.rule-section {
-    margin-bottom: 25px;
-    padding-bottom: 25px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.rule-section:last-child {
-    border-bottom: none;
-}
-
-.rule-section h3 {
-    color: #4ecdc4;
-    font-size: 1.3rem;
-    text-align: left;
-    margin-bottom: 15px;
+.card.has-image .card-number {
+    background: rgba(0, 0, 0, 0.9);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    gap: 10px;
-}
-
-.rule-section p, .rule-section li {
-    color: #ddd;
-    line-height: 1.6;
-    margin-bottom: 10px;
-}
-
-.card-rules h4 {
+    justify-content: center;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    border: 2px solid #ffd700;
     color: #ffd700;
-    margin: 15px 0 10px 0;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
 }
 
-/* Responsive Design */
-@media (max-width: 1200px) {
-    .game-board {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
-    }
-    
-    .stones-display, .tokens-pile {
-        order: -1;
-    }
+.card.has-image .card-name {
+    background: rgba(0, 0, 0, 0.9);
+    padding: 8px 12px;
+    border-radius: 15px;
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.card.has-image .card-effect {
+    background: rgba(0, 0, 0, 0.9);
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    line-height: 1.3;
+    color: #ddd;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Infinity Stone cards with images */
+.card.infinity-stone.has-image {
+    border: 3px solid #ffd700;
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+}
+
+/* Stone display with images */
+.stone-slot.has-image {
+    border: none !important;
+    background-size: contain !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+}
+
+.stone-slot.has-image i {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    border: 2px solid #ffd700;
+}
+
+/* Image loading animation */
+.card.image-loading {
+    background: linear-gradient(90deg, #1a1a2e 25%, #2a2a3e 50%, #1a1a2e 75%) !important;
+    background-size: 200% 100% !important;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Selected card with image */
+.card.has-image.selected {
+    border: 3px solid #4ecdc4 !important;
+    box-shadow: 0 0 25px #4ecdc4 !important;
+    transform: translateY(-10px) scale(1.05);
+}
+
+/* Hover effects for cards with images */
+.card.has-image:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
+}
+
+/* Card without image (fallback) */
+.card:not(.has-image) {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+}
+
+/* Responsive image cards */
 @media (max-width: 768px) {
-    .logo h1 {
-        font-size: 2.5rem;
+    .card.has-image .card-effect {
+        font-size: 0.65rem;
+        padding: 6px;
     }
     
-    .game-header {
-        flex-direction: column;
-        gap: 20px;
+    .card.has-image .card-name {
+        font-size: 0.85rem;
+        padding: 6px 10px;
     }
     
-    .life-trackers {
-        width: 100%;
-        justify-content: space-around;
-    }
-    
-    .action-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .btn-action, .btn-primary, .btn-secondary {
-        width: 100%;
-        max-width: 300px;
-    }
-    
-    .card {
-        width: 100px;
-        height: 150px;
+    .card.has-image .card-number {
+        width: 35px;
+        height: 35px;
+        font-size: 1.3rem;
     }
 }
 
 @media (max-width: 480px) {
-    .count-selector {
-        flex-direction: column;
-        align-items: center;
+    .card.has-image .card-effect {
+        font-size: 0.6rem;
+        padding: 4px;
+        display: none; /* Hide on very small screens */
     }
     
-    .count-btn {
-        width: 200px;
-    }
-    
-    .player-input {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .card {
-        width: 80px;
-        height: 120px;
-        padding: 10px;
-    }
-    
-    .card-number {
-        font-size: 2rem;
-    }
-    
-    .card-name {
+    .card.has-image .card-name {
         font-size: 0.8rem;
+        padding: 4px 8px;
+    }
+    
+    .loading-logo h1 {
+        font-size: 2.2rem;
+    }
+    
+    .loading-content {
+        padding: 20px;
+        margin: 10px;
     }
 }
